@@ -34,6 +34,8 @@ module Netcents
 
     # Don't generate system test files.
     config.generators.system_tests = nil
+    config.load_defaults 6.0 and config.autoloader = :classic
+    # config.active_record.include_root_in_json = true
 
   end
 end

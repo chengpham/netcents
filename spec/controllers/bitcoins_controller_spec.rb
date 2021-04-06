@@ -1,14 +1,22 @@
 require 'rails_helper'
 
 RSpec.describe Api::V1::BitcoinsController, type: :controller do
-    describe '#index' do 
-        before do
-            user = User.create(first_name: "John", last_name: "Smith", email: "johnsmith@gmail.com", password: "supersecret")
-            request.session[:user_id] = user.id
-        end
-        it 'render the index json' do
+    before do
+        @user = User.create(first_name: "John", last_name: "Smith", email: "johnsmith@gmail.com", password: "supersecret")
+    end
+    describe 'login with valid JWT Token' do
+        it 'fetchs index' do
+            request.headers.merge!(authenticated_header(@user))
             get(:index)
-            response.body == Bitcoin.all.order(created_at: :DESC).to_json
+            expect(response.status).to eql(200)
+            expect(response.message).to eql('OK')
+        end
+    end
+    describe 'login with invalid JWT Token' do
+        it 'fetchs index' do
+            get(:index)
+            expect(response.status).to eql(401)
+            expect(response.message).to eql('Unauthorized')
         end
     end
 end
