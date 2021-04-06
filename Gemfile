@@ -26,20 +26,17 @@ gem 'bcrypt', '~> 3.1.7'
 # Reduces boot times through caching; required in config/boot.rb
 gem 'bootsnap', '>= 1.4.4', require: false
 
-gem 'cancancan', '~> 3.2', '>= 3.2.1'
 gem 'rack-cors'
 gem 'rufus-scheduler', '~> 3.7'
-gem 'activejob-scheduler', '~> 0.0.1'
-gem 'delayed_job_active_record'
-gem 'whenever', '~> 1.0'
-gem 'rest-client', '~> 2.1'
+gem 'rest-client'
+gem 'jwt'
+gem 'active_model_serializers', '~> 0.10.2'
 
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
   gem 'rspec-rails'
-  gem 'factory_bot_rails'
   gem 'rails-controller-testing'
 end
 

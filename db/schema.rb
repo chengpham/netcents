@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_03_19_043221) do
+ActiveRecord::Schema.define(version: 2021_04_04_030120) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -19,25 +19,28 @@ ActiveRecord::Schema.define(version: 2021_03_19_043221) do
     t.string "_hash"
     t.bigint "total"
     t.bigint "fees"
-    t.json "inputs", array: true
-    t.json "outputs", array: true
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.index ["_hash"], name: "index_bitcoins_on__hash", unique: true
   end
 
-  create_table "delayed_jobs", force: :cascade do |t|
-    t.integer "priority", default: 0, null: false
-    t.integer "attempts", default: 0, null: false
-    t.text "handler", null: false
-    t.text "last_error"
-    t.datetime "run_at"
-    t.datetime "locked_at"
-    t.datetime "failed_at"
-    t.string "locked_by"
-    t.string "queue"
-    t.datetime "created_at", precision: 6
-    t.datetime "updated_at", precision: 6
-    t.index ["priority", "run_at"], name: "delayed_jobs_priority"
+  create_table "inputs", force: :cascade do |t|
+    t.string "prev_hash"
+    t.bigint "output_value"
+    t.string "addresses", array: true
+    t.bigint "bitcoin_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["bitcoin_id"], name: "index_inputs_on_bitcoin_id"
+  end
+
+  create_table "outputs", force: :cascade do |t|
+    t.bigint "value"
+    t.string "addresses", array: true
+    t.bigint "bitcoin_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["bitcoin_id"], name: "index_outputs_on_bitcoin_id"
   end
 
   create_table "users", force: :cascade do |t|
@@ -50,4 +53,6 @@ ActiveRecord::Schema.define(version: 2021_03_19_043221) do
     t.index ["email"], name: "index_users_on_email", unique: true
   end
 
+  add_foreign_key "inputs", "bitcoins"
+  add_foreign_key "outputs", "bitcoins"
 end
